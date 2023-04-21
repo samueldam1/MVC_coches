@@ -46,7 +46,7 @@ public class Model {
 
     /**
      * Ddevuelve la velocidad segun la matricula
-     * @param s
+     * @param matricula
      * @return
      */
     public Integer getVelocidad(String matricula) {
