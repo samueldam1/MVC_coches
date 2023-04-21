@@ -22,11 +22,34 @@ public class Model {
      */
     public Coche getCoche(String matricula){
         Coche aux = null;
+        // recorre el array buscando por matricula
         for (Coche e: parking) {
             if (e.matricula.equals(matricula)) {
                 aux = e;
             }
         }
         return aux;
+    }
+
+    /**
+     *
+     * @param matricula
+     * @param v nueva velocidad
+     * @return velocidad modificada
+     */
+    public Integer cambiarVelocidad(String matricula, Integer v) {
+        // busca el coche
+        getCoche(matricula).velocidad = v;
+        // retorna la nueva velocidad
+        return getCoche(matricula).velocidad;
+    }
+
+    /**
+     * Ddevuelve la velocidad segun la matricula
+     * @param s
+     * @return
+     */
+    public Integer getVelocidad(String matricula) {
+        return getCoche(matricula).velocidad;
     }
 }
