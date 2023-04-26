@@ -20,7 +20,8 @@ classDiagram
           ArrayList~Coche~: parking
           +crearCoche(String, String, String)
           +getCoche(String)
-          +cambiarVelocidad(String, Integer)
+          +subirVelocidad(Integer v)
+          +bajarVelocidad(Integer v)
           +getVelocidad(String)
       }
     Controller "1" *-- "1" Model : association
