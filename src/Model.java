@@ -43,6 +43,14 @@ public class Model {
         return aux;
     }
 
+    /**
+     * Método que a partir de la matricula devuelve el modelo
+     * @param matricula
+     * @return
+     */
+    public String getModelo(String matricula) {
+        return getCoche(matricula).modelo;
+    }
 
     /**
      * Ddevuelve la velocidad segun la matricula
@@ -58,7 +66,6 @@ public class Model {
     /**
      *
      * @param matricula
-     * @param v nueva velocidad
      * @return velocidad modificada
      */
 
