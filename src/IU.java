@@ -15,6 +15,8 @@ public class IU {
     private JButton btCrear;
     private JButton btBajar;
     private JButton btAumentar;
+    private JButton btBuscar;
+
     /**
      * Constructor del entorno gráfico
      * tendrá los listener de la interfaz gráfica
@@ -37,6 +39,12 @@ public class IU {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Controller.aumentarVelocidad(tfMatricula.getText());
+            }
+        });
+        btBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Controller.buscarCoche(tfMatricula.getText());
             }
         });
     }
