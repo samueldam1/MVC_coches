@@ -1,6 +1,12 @@
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class Model {
+/**
+ * Vamos a usar Observer en el Model
+ * Por lo tanto vamos a poder observar los cambios en variables
+ * Si bien esta clase está 'deprecate' nos servirá para entender el patrón
+ */
+public class Model extends Observable{
     static ArrayList<Coche> parking = new ArrayList<>();
 
     /**
@@ -20,7 +26,7 @@ public class Model {
      * @param matricula a buscar
      * @return chche o null si no existe
      */
-    public Coche getCoche(String matricula){
+    public static Coche getCoche(String matricula){
         Coche aux = null;
         // recorre el array buscando por matricula
         for (Coche e: parking) {
@@ -32,16 +38,24 @@ public class Model {
     }
 
     /**
+     * Método que cambia la velocidad, por lo tanto
+     * tendrá que avisar al controlador que ha cambiado
      *
      * @param matricula
      * @param v nueva velocidad
-     * @return velocidad modificada
      */
-    public Integer cambiarVelocidad(String matricula, Integer v) {
+    public void cambiarVelocidad(String matricula, Integer v) {
         // busca el coche
         getCoche(matricula).velocidad = v;
-        // retorna la nueva velocidad
-        return getCoche(matricula).velocidad;
+
+        // anotamos el cambio
+        setChanged();
+        // lo notificamos a todos los observadores
+        notifyObservers(getCoche(matricula));
+
+        // ya no retornamos la nueva velocidad
+        // porque vamos a utilizar el patron observer
+        // return getCoche(matricula).velocidad;
     }
 
     /**
@@ -49,7 +63,7 @@ public class Model {
      * @param matricula
      * @return
      */
-    public Integer getVelocidad(String matricula) {
+    public static Integer getVelocidad(String matricula) {
         return getCoche(matricula).velocidad;
     }
 }
