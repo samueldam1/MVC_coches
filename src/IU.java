@@ -38,7 +38,7 @@ public class IU {
         btAumentar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Controller.aumentarVelocidad(tfMatricula.getText());
+                Controller.subirVelocidad(tfMatricula.getText());
             }
         });
         btBuscar.addActionListener(new ActionListener() {

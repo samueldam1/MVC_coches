@@ -2,6 +2,11 @@ public class Controller {
     static Model model = new Model();
     static View view = new View();
     public static void main(String[] args) {
+        // Creamos un objeto del 'observer'
+        ObserverVelocidadMax obsVelMax = new ObserverVelocidadMax();
+        // Usamos el método addObserver para añadir un observer
+        model.addObserver(obsVelMax);
+
         IU.crearVentana();
     }
     public static void crearCoche(String modelo, String matricula){
@@ -12,13 +17,15 @@ public class Controller {
     }
 
     public static void bajarVelocidad(String matricula){
-        int aux = model.bajarVelocidad(matricula);
-        view.muestraVelocidad(matricula, aux);
+        model.bajarVelocidad(matricula);
+        Integer v = model.getVelocidad(matricula);
+        view.muestraVelocidad(matricula,v);
     }
 
-    public static void aumentarVelocidad(String matricula){
-        int aux = model.subirVelocidad(matricula);
-        view.muestraVelocidad(matricula,aux);
+    public static void subirVelocidad(String matricula){
+        model.subirVelocidad(matricula);
+        Integer v = model.getVelocidad(matricula);
+        view.muestraVelocidad(matricula,v);
     }
 
     /**

@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class Model {
-
+public class Model extends Observable {
     static ArrayList<Coche> parking = new ArrayList<>();
+
 
     /**
      * Crea un coche y lo mete en el parking
@@ -17,21 +18,51 @@ public class Model {
     }
 
     /**
+     * Al cambiar la velocidad se da cuenta del cambio
+     * y notifica al observer
      * @param matricula
      * @param v nueva velocidad
-     * @return velocidad modificada
      */
-    public Integer cambiarVelocidad(String matricula, Integer v) {
-        // busca el coche
+    public void cambiarVelocidad(String matricula, Integer v) {
         getCoche(matricula).velocidad = v;
-        // retorna la nueva velocidad
-        return getCoche(matricula).velocidad;
-        /**
-         * Busca coche segun matricula
-         * @param matricula a buscar
-         * @return chche o null si no existe
-         */
+        // parametro cambia
+        setChanged();
+        // notifica del cambio
+        notifyObservers(getCoche(matricula));
     }
+
+    /**
+     * Al cambiar la velocidad se da cuenta del cambio
+     * y notifica al observer
+     * @param matricula
+     */
+    public void subirVelocidad(String matricula) {
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad + 10;
+        // parametro cambia
+        setChanged();
+        //notifica al observer
+        notifyObservers(getCoche(matricula));
+    }
+
+    /**
+     * Al cambiar la velocidad se da cuenta del cambio
+     * y notifica al observer
+     * @param matricula
+     */
+    public void bajarVelocidad(String matricula) {
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad - 10;
+        // parametro cambia
+        setChanged();
+        //notifica al observer
+        notifyObservers(getCoche(matricula));
+
+    }
+
+    /**
+     * Busca coche según matricula
+     * @param matricula a buscar
+     * @return Coche o null (si no existe)
+     */
     public Coche getCoche(String matricula){
         Coche aux = null;
         // recorre el array buscando por matricula
@@ -44,7 +75,7 @@ public class Model {
     }
 
     /**
-     * Método que a partir de la matricula devuelve el modelo
+     * Devuelve el modelo a partir de la matricula
      * @param matricula
      * @return
      */
@@ -53,42 +84,11 @@ public class Model {
     }
 
     /**
-     * Ddevuelve la velocidad segun la matricula
+     * Devuelve la velocidad segun la matricula
      * @param matricula
      * @return
      */
-
     public Integer getVelocidad(String matricula) {
         return getCoche(matricula).velocidad;
     }
-
-    //Empezo ca tarea
-    /**
-     *
-     * @param matricula
-     * @return velocidad modificada
-     */
-
-    public Integer subirVelocidad(String matricula) {
-        // busca el coche
-        getCoche(matricula).velocidad = getCoche(matricula).velocidad + 20;
-        // retorna la nueva velocidad
-        return getCoche(matricula).velocidad;
-    }
-
-    /**
-     * Ddevuelve la velocidad segun la matricula
-     * @param matricula
-     * @return
-     */
-
-    public Integer bajarVelocidad(String matricula){
-        // busca el coche
-        getCoche(matricula).velocidad = getCoche(matricula).velocidad - 20;
-        // retorna la nueva velocidad
-        return getCoche(matricula).velocidad;
-    }
-
-
-
 }
