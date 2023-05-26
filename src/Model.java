@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Model {
+
     static ArrayList<Coche> parking = new ArrayList<>();
 
     /**
@@ -16,10 +17,21 @@ public class Model {
     }
 
     /**
-     * Busca coche segun matricula
-     * @param matricula a buscar
-     * @return chche o null si no existe
+     * @param matricula
+     * @param v nueva velocidad
+     * @return velocidad modificada
      */
+    public Integer cambiarVelocidad(String matricula, Integer v) {
+        // busca el coche
+        getCoche(matricula).velocidad = v;
+        // retorna la nueva velocidad
+        return getCoche(matricula).velocidad;
+        /**
+         * Busca coche segun matricula
+         * @param matricula a buscar
+         * @return chche o null si no existe
+         */
+    }
     public Coche getCoche(String matricula){
         Coche aux = null;
         // recorre el array buscando por matricula
@@ -32,14 +44,34 @@ public class Model {
     }
 
     /**
+     * Método que a partir de la matricula devuelve el modelo
+     * @param matricula
+     * @return
+     */
+    public String getModelo(String matricula) {
+        return getCoche(matricula).modelo;
+    }
+
+    /**
+     * Ddevuelve la velocidad segun la matricula
+     * @param matricula
+     * @return
+     */
+
+    public Integer getVelocidad(String matricula) {
+        return getCoche(matricula).velocidad;
+    }
+
+    //Empezo ca tarea
+    /**
      *
      * @param matricula
-     * @param v nueva velocidad
      * @return velocidad modificada
      */
-    public Integer cambiarVelocidad(String matricula, Integer v) {
+
+    public Integer subirVelocidad(String matricula) {
         // busca el coche
-        getCoche(matricula).velocidad = v;
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad + 20;
         // retorna la nueva velocidad
         return getCoche(matricula).velocidad;
     }
@@ -49,7 +81,14 @@ public class Model {
      * @param matricula
      * @return
      */
-    public Integer getVelocidad(String matricula) {
+
+    public Integer bajarVelocidad(String matricula){
+        // busca el coche
+        getCoche(matricula).velocidad = getCoche(matricula).velocidad - 20;
+        // retorna la nueva velocidad
         return getCoche(matricula).velocidad;
     }
+
+
+
 }
