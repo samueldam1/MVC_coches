@@ -1,21 +1,42 @@
 public class Controller {
+    static Model model = new Model();
+    static View view = new View();
     public static void main(String[] args) {
-        Model miModelo = new Model();
-        View miVista = new View();
+        // Creamos un objeto del 'observer'
+        ObserverVelocidadMax obsVelMax = new ObserverVelocidadMax();
+        // Usamos el método addObserver para añadir un observer
+        model.addObserver(obsVelMax);
 
-        // Crear tres coches
+        IU.crearVentana();
+    }
+    public static void crearCoche(String modelo, String matricula){
+        Coche aux = model.crearCoche(modelo,matricula);
+        if(aux!=null){
+            view.muestraVelocidad(aux.matricula, aux.velocidad);
+        }
+    }
 
-        miModelo.crearCoche("LaFerrari", "SBC 1234");
-        miModelo.crearCoche("Alpine", "HYU 4567");
-        miModelo.crearCoche("Aston Martin", "FGH 3333");
+    public static void bajarVelocidad(String matricula){
+        model.bajarVelocidad(matricula);
+        Integer v = model.getVelocidad(matricula);
+        view.muestraVelocidad(matricula,v);
+    }
 
-        Coche ferrari = miModelo.getCoche("SBC 1234");
-        // modifica la velocidad
-        miModelo.cambiarVelocidad("SBC 1234", 30);
+    public static void subirVelocidad(String matricula){
+        model.subirVelocidad(matricula);
+        Integer v = model.getVelocidad(matricula);
+        view.muestraVelocidad(matricula,v);
+    }
 
-        // recoje la velocidad y la muestra (tarea de la View)
-        boolean hecho = miVista.muestraVelocidad("SBC 1234", miModelo.getVelocidad("SBC 1234"));
+    /**
+     * Metodo que a partir de una matricula devuelve el modelo y la velocidad
+     * del coche asociado a esa matricula
+     * @param matricula
+     */
+    public static void buscarCoche(String matricula){
+        String modelo = model.getModelo(matricula);
+        int v = model.getVelocidad(matricula);
 
-        System.out.println(hecho);
+        view.muestraBusqueda(modelo,matricula,v);
     }
 }

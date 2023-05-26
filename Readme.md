@@ -1,71 +1,105 @@
-# Arquitectura MVC
-
-Aplicación que trabaja con objetos coches, modifica la velocidad y la muestra
-
----
 ## Diagrama de clases:
 
 ```mermaid
 classDiagram
+    class Observable {
+        setChanged()
+        notifyObserver(valor)
+    }
     class Coche {
         String: matricula
         String: modelo
         Integer: velocidad
     }
-      class Controller{
-          +main()
-      }
-      class View {+muestraVelocidad(String, Integer)}
-      class Model {
-          ArrayList~Coche~: parking
-          +crearCoche(String, String, String)
-          +getCoche(String)
-          +cambiarVelocidad(String, Integer)
-          +getVelocidad(String)
-      }
+    class Controller{
+        +main()
+        +crearCoche(String, String)
+        +subirVelocidad(String)
+        +bajarVelocidad(String)
+        +buscarCoche(String)
+    }
+      
+    class View {
+        +muestraVelocidad(String, Integer)
+        +muestraBusqueda(String, String, Integer)
+    }
+      
+    class Model {
+        ArrayList~Coche~: parking
+        +crearCoche(String, String, String)
+        +cambiarVelocidad(String, Integer)
+        +bajarVelocidad(Integer v)
+        +subirVelocidad(Integer v)
+        +getCoche(String)
+        +getModelo(String)
+        +getVelocidad(String)
+    }
+      
+    class IU { crearVentana() }
+      
+    class Dialog { msjDialog() }
+      
+    class ObserverVelocidad { +update() }
+    
+    Controller "1" *-- "1" ObserverVelocidad: association
     Controller "1" *-- "1" Model : association
     Controller "1" *-- "1" View : association
     Model "1" *-- "1..n" Coche : association
-      
+    Observable <|-- Model
+    View "1" *-- "1" IU : association
+    View "1" *-- "1" Dialog : association
 ```
 
 ---
 
-## Diagrama de Secuencia
+## Pasos para crear el observer
 
-Ejemplo básico del procedimiento, sin utilizar los nombres de los métodos
+1. Model
+    * Extiende de `Observable`
+    * En el método en donde ocurra el cambio (en nuestro caso cambiarVelocidad, subirVelocidad y bajarVelocidad):
+        * setChanged()
+        * notifyObserver(Valor) -> en este caso: notifyObserver(getCoche(matricula))
+        
+2. Crear una clase que sea el observador, que implementa la interface `Observer` (ObserverVelocidadMax)
+    * definir el método `update()`
+    * definir las condiciones en las que avisará
+    
+3. Controller
+    * Instanciar el observer
+    * Añadir este observer al observable con `addObserver()`
 
+---
 
+## Evento en la Vista con el Observer
+Este sería el diagrama de secuencias explicado de forma general
 ```mermaid
 sequenceDiagram
-    participant Model
-    participant Controller
+    actor usuario
     participant View
-    Controller->>Model: Puedes crear un coche?
-    activate Model
-    Model-->>Controller: Creado!
-    deactivate Model
-    Controller->>+View: Muestra la velocidad, porfa
-    activate View
-    View->>-View: Mostrando velocidad
-    View-->>Controller: Listo!
-    deactivate View
-```
-
-El mismo diagrama con los nombres de los métodos
-
-```mermaid
-sequenceDiagram
-    participant Model
     participant Controller
-    participant View
-    Controller->>Model: crearCoche("Mercedes", "BXK 1234")
+    participant Model
+    participant ObsExceso
+    
+    usuario->>View: Click! Crear coche
+    View->>Controller: El usuario quiere crear un coche
+    activate Controller
+    Controller->>Model: Crea un coche, porfa
     activate Model
     Model-->>Controller: Coche
     deactivate Model
-    Controller->>+View: muestraVelocidad("BXK 1234", velocidad)
-    activate View
-    View->>-View: System.out.println()
-    View-->>Controller: boolean
-    deactivate View
+    Controller->>View: ok, coche creado!
+    deactivate Controller
+    View-->>usuario: Tu coche se creó!
+    
+    usuario->>View: Click! Subir velocidad
+    View->>Controller: El usuario quiere subir la velocidad
+    activate Controller
+    Controller->>Model: Sube la velocidad, porfa
+    activate Model
+    Model-->>ObsExceso: Sube la Velocidad
+    activate ObsExceso
+    ObsExceso-->>View: Cambio en la velocidad
+    View-->usuario: Alerta! (si la velocidad supera los 120km/h)
 ```
+
+---
