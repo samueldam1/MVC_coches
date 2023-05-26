@@ -78,3 +78,6 @@
           <text value="Aumentar Velocidade"/>
         </properties>
       </component>
+    </children>
+  </grid>
+</form>
